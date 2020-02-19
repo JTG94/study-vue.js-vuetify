@@ -16,7 +16,12 @@ export default [
   },
   {
     path: '/myEducation/register',
-    name: 'Education Form',
+    name: 'Education Register',
+    view: 'EducationForm'
+  },
+  {
+    path: '/myEducation/:educationId/edit',
+    name: 'Education Edit',
     view: 'EducationForm'
   },
   {

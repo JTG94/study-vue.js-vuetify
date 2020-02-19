@@ -220,7 +220,7 @@
                     <v-select
                       v-model="editedItem.type"
                       :items="edutypeList"
-                      label="카테고리(Category)"
+                      label="교육유형"
                       class="purple-input"
                       prepend-icon="mdi-animation"
                       required
@@ -281,8 +281,8 @@
                 :to="{name: 'Education Detail', params: {educationId: item.id}}">
                 <td>{{ item.title }}</td>
               </router-link>
-              <td>{{ item.startDate[0] + '-' + item.startDate[1] + '-' +item.startDate[2] }}</td>
-              <td>{{ item.endDate[0] + '-' + item.endDate[1] + '-' +item.endDate[2] }}</td>
+              <td>{{ item.startDate }}</td>
+              <td>{{ item.endDate }}</td>
               <td>{{ item.totalHours }}</td>
               <td>{{ item.type }}</td>
               <td>{{ item.place }}</td>
@@ -343,7 +343,7 @@
   </v-container>
 </template>
 <script>
-import { getMyEducationList, deleteMyEducationItem, getCategoryList, putMyEducationItem } from '../api/index.js'
+import { getMyEducationList, deleteMyEducationItem, getCategoryList, putMyEducationItem, getMyEducationItem } from '../api/index.js'
 
 export default {
   data () {
@@ -358,10 +358,12 @@ export default {
           width: '480px'
         },
         {
+          sortable: false,
           text: '시작날짜',
           value: 'startDate'
         },
         {
+          sortable: false,
           text: '종료날짜',
           value: 'endDate'
         },
@@ -386,6 +388,7 @@ export default {
         }
       ],
       items: [],
+      hashTagString: '',
       categoryList: [],
       edutypeList: ['ONLINE', 'OFFLINE'],
       editedIndex: -1,
@@ -476,25 +479,8 @@ export default {
     }
   },
   created () {
-    var vm = this
-    getMyEducationList(1783)
-      // .then(response => this.items = response.data.response)
-      .then(function (response) {
-        for (var v in response.data.response) {
-          console.log('hi')
-          var educations = {
-            title: v.title,
-            content: v.content,
-            startDate: v.startDate[0] + '-' + v.startDate[1] + ' - ' + v.startDate[2],
-            endDate: v.endDate[0] + '-' + v.endDate[1] + ' - ' + v.endDate[2],
-            totalHours: v.totalHours,
-            type: v.type,
-            place: v.place,
-            category: v.category
-          }
-          vm.items.add(educations)
-        }
-      })
+    getMyEducationList(1860)
+      .then(response => this.items = response.data.response)
       .catch(error => console.log(error))
   },
   methods: {
@@ -522,9 +508,30 @@ export default {
     },
     update () {
       if (this.editedIndex > -1) {
+        var vm = this
         Object.assign(this.items[this.editedIndex], this.editedItem)
+
+        getMyEducationItem(vm.editedItem.id)
+          .then(function (response) {
+            var editedEducation = {
+              title: vm.editedItem.title,
+              content: response.data.response.content,
+              startDate: vm.editedItem.startDate,
+              endDate: vm.editedItem.endDate,
+              totalHours: vm.editedItem.totalHours,
+              type: vm.editedItem.type,
+              place: vm.editedItem.place,
+              hashTag: '',
+              userId: 1783,
+              categoryId: vm.editedItem.category.id
+            }
+            putMyEducationItem(response.data.response.id, editedEducation)
+              .then(alert('수정되었습니다!'))
+              .catch(error => console.log(error))
+            vm.cancle()
+          })
+          .catch(error => console.log(error))
       }
-      this.cancle()
     }
   }
 }

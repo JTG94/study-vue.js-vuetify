@@ -21,8 +21,8 @@ function deleteMyEducationItem(educationId) {
   return axios.delete(`${config.baseUrl}educations/${educationId}`)
 }
 // 사용자 교육 단건 수정 요청
-function putMyEducationItem(educationId) {
-  return axios.put(`${config.baseUrl}educations/${educationId}`)
+function putMyEducationItem(educationId, editedEducation) {
+  return axios.put(`${config.baseUrl}educations/${educationId}`, editedEducation)
 }
 // 카테고리 목록 요청
 function getCategoryList() {

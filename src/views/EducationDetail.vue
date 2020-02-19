@@ -1,283 +1,278 @@
 <template>
-  <v-form
-    ref="form">
-    <v-container
-      fill-height
-      fluid
-      grid-list-xl>
-      <v-layout
-        justify-center
-        wrap
+  <v-container
+    fill-height
+    fluid
+    grid-list-xl>
+    <v-layout
+      justify-center
+      wrap
+    >
+      <v-flex
+        xs12
+        md8
       >
-        <v-flex
-          xs12
-          md8
+        <material-card
+          color="orange"
+          title="교육 상세 페이지"
+          text="My Education Detail"
         >
-          <material-card
-            color="green"
-            title="나의 교육 입력"
-            text="Register your education"
-          >
-            <v-form>
-              <v-container py-0>
-                <v-layout wrap>
-                  <v-flex
-                    xs12
-                    md8
+          <v-form>
+            <v-container py-0>
+              <v-layout wrap>
+                <v-flex
+                  xs12
+                  md7
+                >
+                  <v-card
+                    class="mx-auto font-weight-bold"
+                    max-width="800px"
+                    hover
                   >
-                    <v-text-field
-                      v-model="title"
-                      :rules="[v => !!v || '교육 명은 필수 입력사항입니다']"
-                      label="교육 명(TITLE)"
-                      hint="교육 명을 입력해주세요."
-                      class="purple-input"
-                      required
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md4
+                    <v-card-text>
+                      <h6 class="grey--text font-italic">제목(TITLE)</h6>
+                      <div>{{ title }}</div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md3
+                >
+                  <v-card
+                    class="mx-auto  text-xs-center"
+                    max-width="200px"
+                    hover
                   >
-                    <v-select
-                      v-model="category"
-                      :items="categoryList"
-                      label="카테고리(미 선택시 '기타'로 분류됩니다.)"
-                      hint=""
-                      class="purple-input"
-                      prepend-icon="mdi-animation"
-                      item-text="name"
-                      item-value="id"
-                      required
-                      chips
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md12
+                    <v-card-text>
+                      <h6 class="grey--text font-italic text-xs-left">카테고리(Category)</h6>
+                      <div>{{ category.name }}</div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md2
+                >
+                  <v-card
+                    class="mx-auto text-xs-center"
+                    max-width="200px"
+                    hover
+                    dark
                   >
-                    <v-textarea
-                      v-model="content"
-                      label="교육 내용(CONTENTS)"
-                      rows="15"
-                      hint="교육 내용을 입력해주세요."
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md6
+                    <v-card-text>
+                      <h6 class="grey--text font-italic text-xs-left">등록번호</h6>
+                      <div>No.{{ id }}</div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md12
+                >
+                  <v-card
+                    class="mx-auto"
+                    max-width="1200px"
+                    min-height="300px"
+                    hover
                   >
-                    <v-text-field
-                      v-model="hashTag"
-                      label="해시태그(HashTag)"
-                      hint="해시태그를 입력해주세요. ex) #Spring #HTML"
-                      prepend-icon="mdi-tag"
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md3
+                    <v-card-text>
+                      <h6 class="grey--text font-italic">내용(CONTENTS)</h6>
+                      <p
+                        id="my-p"
+                        class="font-weight-thin mb-5 text-xs-left"
+                        v-html="content"/>
+
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md6
+                >
+                  <v-card
+                    class="mx-auto"
+                    max-width="600px"
+                    hover
                   >
-                    <v-text-field
-                      v-model="place"
-                      label="교육장소(Place)"
-                      hint="교육장소를 입력해주세요."
-                      prepend-icon="mdi-map-marker"
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md3
+                    <v-card-text>
+                      <div>
+                        <h6 class="grey--text font-italic">해시태그(HashTag)</h6>
+                        {{ hashTags }}
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md3
+                >
+                  <v-card
+                    class="mx-auto"
+                    max-width="300px"
+                    hover
                   >
-                    <v-select
-                      v-model="type"
-                      :items="edutypeList"
-                      :rules="[v => !!v || '교육 유형은 필수 입력사항입니다']"
-                      label="교육유형"
-                      hint=""
-                      class="purple-input"
-                      prepend-icon="mdi-animation"
-                      item-text="name"
-                      required
-                      chips
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md5
+                    <v-card-text>
+                      <h6 class="grey--text font-italic">교육장소(PLACE)</h6>
+                      <div>
+                        {{ place }}
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md3
+                >
+                  <v-card
+                    class="mx-auto text-xs-center"
+                    max-width="300px"
+                    hover
                   >
-                    <v-menu
-                      ref="startDate"
-                      :close-on-content-click="false"
-                      v-model="startDate"
-                      :nudge-right="40"
-                      :return-value.sync="sdate"
-                      lazy
-                      transition="scale-transition"
-                      offset-y
-                      full-width
-                      min-width="60px"
+                    <v-card-text>
+                      <h6 class="grey--text font-italic text-xs-left">교육유형(TYPE)</h6>
+                      <div>
+                        {{ type }}
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md5
+                >
+                  <v-card
+                    class="mx-auto text-xs-center"
+                    max-width="500px"
+                    hover
+                  >
+                    <v-card-text>
+                      <h6 class="grey--text font-italic text-xs-left">시작날짜(StartDate)</h6>
+                      <div>
+                        {{ startDate }}
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md5
+                >
+                  <v-card
+                    class="mx-auto text-xs-center"
+                    max-width="500px"
+                    hover
+                  >
+                    <v-card-text>
+                      <h6 class="grey--text font-italic text-xs-left">종료날짜(EndDate)</h6>
+                      <div>
+                        {{ endDate }}
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs12
+                  md2
+                >
+                  <v-card
+                    class="mx-auto text-xs-center"
+                    max-width="200px"
+                    hover
+                  >
+                    <v-card-text>
+                      <div>
+                        <h6 class="grey--text font-italic text-xs-left">교육시간</h6>
+                        {{ totalHours }} 시간
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex
+                  xs6
+                  text-xs-left
+                >
+                  <v-btn
+                    class="mx-1 font-weight-light"
+                    color="info"
+                    @click="back"
+                  >
+                    <v-icon>mdi-arrow-left</v-icon>
+                    목록으로
+                  </v-btn>
+                </v-flex>
+                <v-flex
+                  xs6
+                  text-xs-right
+                >
+                  <router-link
+                    :to="{name: 'Education Edit', params: {educationId: id}}">
+                    <v-btn
+                      class="mx-1 font-weight-light white--text"
+                      color="teal"
                     >
-                      <v-text-field
-                        slot="activator"
-                        v-model="sdate"
-                        :rules="[v => !!v || '시작날짜는 필수 입력사항입니다']"
-                        class="purple-input"
-                        label="교육 시작날짜(startDate)"
-                        readonly
-                        required
-                        prepend-icon="mdi-calendar"
-                      />
-                      <v-date-picker
-                        v-model="sdate"
-                        @input="$refs.startDate.save(sdate)"/>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md5
-                  >
-                    <v-menu
-                      ref="endDate"
-                      :close-on-content-click="false"
-                      v-model="endDate"
-                      :nudge-right="40"
-                      :return-value.sync="edate"
-                      lazy
-                      transition="scale-transition"
-                      offset-y
-                      full-width
-                      min-width="60px"
-                      color="black--text"
-                    >
-                      <v-text-field
-                        slot="activator"
-                        v-model="edate"
-                        class="purple-input"
-                        label="교육 종료날짜(endDate)"
-                        readonly
-                        required
-                        prepend-icon="mdi-calendar"
-                      />
-                      <v-date-picker
-                        v-model="edate"
-                        @input="$refs.endDate.save(edate)"/>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    md2
-                  >
-                    <v-text-field
-                      v-model="totalHours"
-                      :rules="totalHoursRules"
-                      type="number"
-                      class="purple-input"
-                      label="총 교육시간"
-                      hint="교육시간을 입력해주세요. (숫자만 입력가능)"
-                      required
-                      prepend-icon="mdi-timer"
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    text-xs-right
-                  >
-                    <!-- <v-slide-x-reverse-transition>
-                      <v-tooltip
-                        v-if="formHasErrors"
-                        left
-                      >
-                        <v-btn
-                          slot="activator"
-                          icon
-                          class="my-0"
-                          @click="resetForm"
-                        >
-                          <v-icon color="blue">mdi-autorenew</v-icon>
-                        </v-btn>
-                        <span>초기화</span>
-                      </v-tooltip>
-                    </v-slide-x-reverse-transition> -->
+                      <v-icon color="white">mdi-pen</v-icon>
+                      수정
+                    </v-btn>
                     <v-btn
                       class="mx-1 font-weight-light"
-                      color="success"
-                      @click="submit"
+                      color="error"
+                      @click="removeEducation"
                     >
-                      <v-icon>mdi-check</v-icon>
-                      등록
+                      <v-icon>mdi-delete</v-icon>
+                      삭제
                     </v-btn>
-                    <v-btn
-                      class="mx-0 font-weight-light"
-                      color="info"
-                      @click="back"
-                    >
-                      <v-icon>mdi-arrow-left</v-icon>
-                      목록으로
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-form>
-          </material-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-form>
+                  </router-link>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-form>
+        </material-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
-import { getCategoryList, postEducation } from '../api/index.js'
+import { getMyEducationItem, deleteMyEducationItem } from '../api/index.js'
 
 export default {
   data () {
     return {
+      id: '',
       title: '',
-      category: null,
+      category: {},
       content: '',
-      hashTag: '',
+      hashTags: '',
       place: '',
-      type: null,
+      type: '',
       totalHours: '',
-      totalHoursRules: [
-        v => !!v || '교육시간은 필수 입력사항입니다.',
-        v => (v && v > 0) || '0보다 큰값을 입력해주세요.'
-      ],
-      sdate: null,
-      edate: null,
-      startDate: false,
-      endDate: false,
-      categoryList: [],
-      edutypeList: ['ONLINE', 'OFFLINE'],
+      startDate: '',
+      endDate: ''
     }
   },
   created () {
-    var vm = this
-    getCategoryList()
-      .then(function (response) {
-        vm.categoryList = response.data.response
+    getMyEducationItem(this.$route.params.educationId)
+      .then(response => {
+        this.id = response.data.response.id
+        this.title = response.data.response.title
+        this.content = response.data.response.content
+        this.startDate = response.data.response.startDate
+        this.endDate = response.data.response.endDate
+        this.totalHours = response.data.response.totalHours
+        this.place = response.data.response.place
+        this.type = response.data.response.type
+        this.category = response.data.response.category
+        for (var i = 0; i < response.data.response.eduTags.length; i++) {
+          this.hashTags += response.data.response.eduTags[i].tagName + ' '
+        }
       })
       .catch(error => console.log(error))
   },
   methods: {
-    submit () {
-      var educations = {
-        title: this.title,
-        content: this.content,
-        startDate: this.sdate,
-        endDate: this.edate,
-        totalHours: this.totalHours,
-        type: this.type,
-        place: this.place,
-        categoryId: this.category,
-        hashTag: this.hashTag,
-        userId: '1783'
-      }
-      postEducation(educations)
-        .then(response => console.log(response))
-        .catch(function (error) {
-          console.log(error)
-          alert('값을 정확히 입력해주세요.')
-        })
+    removeEducation () {
+      confirm('정말 삭제하시겠습니까?') && deleteMyEducationItem(this.$route.params.educationId)
+        .then(history.back())
+        .catch(error => console.log(error))
     },
     back () {
       history.back()
