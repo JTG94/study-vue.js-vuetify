@@ -14,29 +14,25 @@
         <v-flex
           xs2
         >
-          <material-chart-card
-            :data="emailsSubscriptionChart.data"
-            :options="emailsSubscriptionChart.options"
-            :responsive-options="emailsSubscriptionChart.responsiveOptions"
+          <material-stats-card
+            color="orange"
+            icon="2"
+            title="부서 내 나의 순위"
+            value="2 / 14"
+            height="125px"
+          />
+          <material-stats-card
             color="purple"
-            type="Pie"
-          >
-            <h4 class="title font-weight-light">팀 내 나의 순위</h4>
-            <p class="category d-inline-flex font-weight-light"> <span class="green--text">2 / 12</span>&nbsp;</p>
-
-            <template slot="actions">
-              <v-icon
-                class="mr-2"
-                small
-              >
-                mdi-clock-outline
-              </v-icon>
-              <span class="caption grey--text font-weight-light">updated 10 minutes ago</span>
-            </template>
-          </material-chart-card>
+            icon="mdi-finance"
+            title="주력 카테고리"
+            value="개발"
+            height="125px"
+          />
         </v-flex>
         <v-flex
-          xs2
+          md12
+          sm12
+          lg4
         >
           <material-chart-card
             :data="emailsSubscriptionChart.data"
@@ -45,15 +41,9 @@
             color="red"
             type="Bar"
           >
-            <h4 class="title font-weight-light">나 vs 가비아</h4>
-            <p class="category d-inline-flex font-weight-light">
-              <v-icon
-                color="red"
-                small
-              >
-                mdi-arrow-down
-              </v-icon>
-            <span class="red--text">-200시간</span>&nbsp;</p>
+            <h4 class="title font-weight-light">Email Subscription</h4>
+            <p class="category d-inline-flex font-weight-light">Last Campaign Performance</p>
+
             <template slot="actions">
               <v-icon
                 class="mr-2"
@@ -90,17 +80,27 @@
           </material-chart-card>
         </v-flex>
         <v-flex
-          xs5
+          md12
+          sm12
+          lg4
         >
           <material-chart-card
-            :data="myEducationMonthlyChart.data"
-            :options="myEducationMonthlyChart.options"
-            :responsive-options="myEducationMonthlyChart.responsiveOptions"
+            :data="dailySalesChart.data"
+            :options="dailySalesChart.options"
             color="info"
             type="Line"
           >
-            <h4 class="title font-weight-light">2020 월별 나의 교육시간 추이</h4>
-            <p class="category d-inline-flex font-weight-light"> <span class="green--text">전달 대비 23% 증가</span>&nbsp;</p>
+            <h4 class="title font-weight-light">Daily Sales</h4>
+            <p class="category d-inline-flex font-weight-light">
+              <v-icon
+                color="green"
+                small
+              >
+                mdi-arrow-up
+              </v-icon>
+              <span class="green--text">55%</span>&nbsp;
+              increase in today's sales
+            </p>
 
             <template slot="actions">
               <v-icon
@@ -109,7 +109,7 @@
               >
                 mdi-clock-outline
               </v-icon>
-              <span class="caption grey--text font-weight-light">updated 10 minutes ago</span>
+              <span class="caption grey--text font-weight-light">updated 4 minutes ago</span>
             </template>
           </material-chart-card>
         </v-flex>
@@ -133,11 +133,14 @@
               <h6 class="category text-gray font-weight-thin mb-3">gender : man</h6>
               <h6 class="category text-gray font-weight-thin mb-3">phone : 010-9100-0000</h6>
               <h6 class="category text-gray font-weight-thin mb-3">tel : 031-714-5555</h6> -->
-              <v-btn
-                color="success"
-                round
-                class="font-weight-light"
-              >상세 보기</v-btn>
+              <router-link
+                :to="{name: 'User Profile'}">
+                <v-btn
+                  color="success"
+                  round
+                  class="font-weight-light"
+                >상세 보기</v-btn>
+              </router-link>
             </v-card-text>
           </material-card>
         </v-flex>
@@ -180,6 +183,7 @@
                       item-value="id"
                       required
                       chips
+                      color="purple"
                     />
                   </v-flex>
                   <v-flex
@@ -225,6 +229,7 @@
                       prepend-icon="mdi-animation"
                       required
                       chips
+                      color="purple"
                     />
                   </v-flex>
                   <v-flex
@@ -283,10 +288,17 @@
               </router-link>
               <td>{{ item.startDate }}</td>
               <td>{{ item.endDate }}</td>
-              <td>{{ item.totalHours }}</td>
-              <td>{{ item.type }}</td>
+              <td class="text-xs-center">{{ item.totalHours }}</td>
+              <td class="text-xs-center">
+                <v-chip
+                  :color="getColor(item.type)"
+                  dark
+                  class="text-xs-center">
+                  <td>{{ item.type }}</td>
+                </v-chip>
+              </td>
               <td>{{ item.place }}</td>
-              <td>{{ item.category.name }}</td>
+              <td class="text-xs-center">{{ item.category.name }}</td>
               <v-tooltip
                 top
                 content-class="top">
@@ -343,7 +355,7 @@
   </v-container>
 </template>
 <script>
-import { getMyEducationList, deleteMyEducationItem, getCategoryList, putMyEducationItem, getMyEducationItem } from '../api/index.js'
+import { getMyEducationList, deleteMyEducationItem, getCategoryList, putMyEducationItem, getMyEducationItem, getCategoryItem } from '../api/index.js'
 
 export default {
   data () {
@@ -368,13 +380,16 @@ export default {
           value: 'endDate'
         },
         {
+          sortable: false,
           text: '시간',
-          value: 'totalHours'
+          value: 'totalHours',
+          align: 'center'
         },
         {
           sortable: false,
           text: '교육유형',
-          value: 'type'
+          value: 'type',
+          align: 'center'
         },
         {
           sortable: false,
@@ -384,7 +399,8 @@ export default {
         {
           sortable: false,
           text: '카테고리',
-          value: 'category'
+          value: 'category',
+          align: 'center'
         }
       ],
       items: [],
@@ -411,9 +427,10 @@ export default {
       },
       emailsSubscriptionChart: {
         data: {
-          labels: ['나', 'Gabia'],
+          labels: ['Ja', 'Fe', 'Ma', 'Ap', 'Mai', 'Ju', 'Jul', 'Au', 'Se', 'Oc', 'No', 'De'],
           series: [
-            [120, 320]
+            [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+
           ]
         },
         options: {
@@ -421,7 +438,7 @@ export default {
             showGrid: false
           },
           low: 0,
-          high: 500,
+          high: 1000,
           chartPadding: {
             top: 0,
             right: 5,
@@ -430,7 +447,7 @@ export default {
           }
         },
         responsiveOptions: [
-          ['screen and (max-width: 120px)', {
+          ['screen and (max-width: 640px)', {
             seriesBarDistance: 5,
             axisX: {
               labelInterpolationFnc: function (value) {
@@ -440,36 +457,26 @@ export default {
           }]
         ]
       },
-      myEducationMonthlyChart: {
+      dailySalesChart: {
         data: {
-          labels: ['Ja', 'Fe', 'Ma', 'Ap', 'Mai', 'Ju', 'Jul', 'Au', 'Se', 'Oc', 'No', 'De'],
+          labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
           series: [
-            [120, 320, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            [12, 17, 7, 17, 23, 18, 38]
           ]
         },
         options: {
-          axisX: {
-            showGrid: false
-          },
+          lineSmooth: this.$chartist.Interpolation.cardinal({
+            tension: 0
+          }),
           low: 0,
-          high: 500,
+          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
           chartPadding: {
             top: 0,
-            right: 5,
+            right: 0,
             bottom: 0,
             left: 0
           }
-        },
-        responsiveOptions: [
-          ['screen and (max-width: 500px)', {
-            seriesBarDistance: 5,
-            axisX: {
-              labelInterpolationFnc: function (value) {
-                return value[0]
-              }
-            }
-          }]
-        ]
+        }
       }
     }
   },
@@ -484,6 +491,10 @@ export default {
       .catch(error => console.log(error))
   },
   methods: {
+    getColor (type) {
+      if (type === 'ONLINE') return 'green'
+      else if (type === 'OFFLINE') return 'red'
+    },
     removeEducation (item) {
       const index = this.items.indexOf(item)
       confirm('정말 삭제하시겠습니까?') && this.items.splice(index, 1) && deleteMyEducationItem(item.id)
@@ -494,7 +505,6 @@ export default {
       getCategoryList()
         .then(response => this.categoryList = response.data.response)
         .catch(error => console.log(error))
-
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
@@ -509,10 +519,19 @@ export default {
     update () {
       if (this.editedIndex > -1) {
         var vm = this
-        Object.assign(this.items[this.editedIndex], this.editedItem)
 
-        getMyEducationItem(vm.editedItem.id)
+        getCategoryItem(vm.editedItem.category.id)
+          .then(response => {
+            Object.assign(this.items[this.editedIndex], this.editedItem)
+            this.items[this.editedIndex].category.name = response.data.response.name
+          })
+          .catch(error => console.log(error))
+
+        getMyEducationItem(this.editedItem.id)
           .then(function (response) {
+            for (var i = 0; i < response.data.response.eduTags.length; i++) {
+              vm.hashTagString += response.data.response.eduTags[i].tagName + ' '
+            }
             var editedEducation = {
               title: vm.editedItem.title,
               content: response.data.response.content,
@@ -521,7 +540,7 @@ export default {
               totalHours: vm.editedItem.totalHours,
               type: vm.editedItem.type,
               place: vm.editedItem.place,
-              hashTag: '',
+              hashTag: vm.hashTagString,
               userId: 1783,
               categoryId: vm.editedItem.category.id
             }

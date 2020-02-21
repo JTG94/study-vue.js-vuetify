@@ -6,7 +6,7 @@
 export default [
   {
     path: '',
-    // Relative to /src/views
+    name: 'DashBoard',
     view: 'Dashboard'
   },
   {
@@ -28,6 +28,16 @@ export default [
     path: '/myEducation/:educationId',
     name: 'Education Detail',
     view: 'EducationDetail'
+  },
+  {
+    path: '/userProfile',
+    name: 'User Profile',
+    view: 'UserProfile'
+  },
+  {
+    path: '/userProfile/edit',
+    name: 'Profile Edit',
+    view: 'ProfileForm'
   },
   {
     path: '/user-profile',

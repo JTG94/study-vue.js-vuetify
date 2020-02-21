@@ -88,14 +88,14 @@ export default {
         text: 'Dashboard'
       },
       {
-        to: '/user-profile',
-        icon: 'mdi-account',
-        text: 'User Profile'
-      },
-      {
         to: '/myEducation',
         icon: 'mdi-clipboard-outline',
         text: '나의 교육관리'
+      },
+      {
+        to: '/userProfile',
+        icon: 'mdi-account',
+        text: '내 정보 관리'
       },
       {
         to: '/typography',

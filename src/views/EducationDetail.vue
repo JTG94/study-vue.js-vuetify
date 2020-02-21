@@ -9,7 +9,7 @@
     >
       <v-flex
         xs12
-        md8
+        md10
       >
         <material-card
           color="orange"
@@ -71,7 +71,7 @@
                 >
                   <v-card
                     class="mx-auto"
-                    max-width="1200px"
+                    max-width="1400px"
                     min-height="300px"
                     hover
                   >
@@ -213,15 +213,15 @@
                       <v-icon color="white">mdi-pen</v-icon>
                       수정
                     </v-btn>
-                    <v-btn
-                      class="mx-1 font-weight-light"
-                      color="error"
-                      @click="removeEducation"
-                    >
-                      <v-icon>mdi-delete</v-icon>
-                      삭제
-                    </v-btn>
                   </router-link>
+                  <v-btn
+                    class="mx-1 font-weight-light"
+                    color="error"
+                    @click="removeEducation"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                    삭제
+                  </v-btn>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -271,11 +271,11 @@ export default {
   methods: {
     removeEducation () {
       confirm('정말 삭제하시겠습니까?') && deleteMyEducationItem(this.$route.params.educationId)
-        .then(history.back())
+        .then(this.$router.push('/myEducation'))
         .catch(error => console.log(error))
     },
     back () {
-      history.back()
+      this.$router.push('/myEducation')
     }
   }
 }

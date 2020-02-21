@@ -9,7 +9,7 @@
     >
       <v-flex
         xs12
-        md8
+        md10
       >
         <material-card
           color="green"
@@ -294,7 +294,7 @@ export default {
           userId: '1860'
         }
         postEducation(education)
-          .then(response => console.log(response))
+          .then(response => this.$router.push('/myEducation'))
           .catch(error => {
             console.log(error)
             alert('값을 정확히 입력해주세요.')
@@ -313,7 +313,7 @@ export default {
           userId: '1860'
         }
         putMyEducationItem(this.$route.params.educationId, editedEducation)
-          .then(response => console.log(response))
+          .then(response => this.$router.push({ name: 'Education Detail', params: { educationId: this.$route.params.educationId }}))
           .catch(error => {
             console.log(error)
             alert('값을 정확히 입력해주세요.')
@@ -321,7 +321,11 @@ export default {
       }
     },
     back () {
-      history.back()
+      if (this.$route.name === 'Education Edit') {
+        this.$router.push('/myEducation')
+      } else {
+        history.back()
+      }
     }
   }
 }
