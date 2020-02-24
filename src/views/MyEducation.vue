@@ -355,7 +355,8 @@
   </v-container>
 </template>
 <script>
-import { getMyEducationList, deleteMyEducationItem, getCategoryList, putMyEducationItem, getMyEducationItem, getCategoryItem } from '../api/index.js'
+import { getMyEducationList, deleteMyEducationItem, putMyEducationItem, getMyEducationItem } from '../api/education/education.js'
+import { getCategoryItem, getCategoryList } from '../api/category/category.js'
 
 export default {
   data () {
@@ -486,7 +487,7 @@ export default {
     }
   },
   created () {
-    getMyEducationList(1860)
+    getMyEducationList(1952)
       .then(response => this.items = response.data.response)
       .catch(error => console.log(error))
   },

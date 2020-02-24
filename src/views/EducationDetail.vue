@@ -233,7 +233,7 @@
 </template>
 
 <script>
-import { getMyEducationItem, deleteMyEducationItem } from '../api/index.js'
+import { getMyEducationItem, deleteMyEducationItem } from '../api/education/education.js'
 
 export default {
   data () {
