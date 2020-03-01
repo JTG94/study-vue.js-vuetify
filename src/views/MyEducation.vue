@@ -165,114 +165,124 @@
       <v-flex
         md12
       >
-        <v-dialog
-          v-model="dialog"
-          max-width="700px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">나의 교육 간편 수정</span>
-              <v-spacer/>
-              <h6 class="red--text">* 교육 내용, 해시태그는 상세페이지에서 수정가능합니다.</h6>
-            </v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex
-                    xs12
-                    sm6
-                    md8>
-                    <v-text-field
-                      v-model="editedItem.title"
-                      class="purple-input"
-                      label="교육 명"/>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    sm6
-                    md4>
-                    <v-select
-                      v-model="editedItem.category.id"
-                      :items="categoryList"
-                      label="카테고리(Category)"
-                      class="purple-input"
-                      prepend-icon="mdi-animation"
-                      item-text="name"
-                      item-value="id"
-                      required
-                      chips
-                      color="purple"
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    sm6
-                    md4>
-                    <v-text-field
-                      v-model="editedItem.startDate"
-                      class="purple-input"
-                      hint="YYYY-MM-DD"
-                      label="시작 날짜"/>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    sm6
-                    md4>
-                    <v-text-field
-                      v-model="editedItem.endDate"
-                      class="purple-input"
-                      hint="YYYY-MM-DD"
-                      label="종료 날짜"/>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    sm6
-                    md4>
-                    <v-text-field
-                      v-model="editedItem.totalHours"
-                      class="purple-input"
-                      type="number"
-                      hint="숫자입력(시간)"
-                      label="교육시간"/>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    sm6
-                    md6>
-                    <v-select
-                      v-model="editedItem.type"
-                      :items="edutypeList"
-                      label="교육유형"
-                      class="purple-input"
-                      prepend-icon="mdi-animation"
-                      required
-                      chips
-                      color="purple"
-                    />
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    sm6
-                    md6>
-                    <v-text-field
-                      v-model="editedItem.place"
-                      label="교육 장소"/>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer/>
-              <v-btn
-                color="blue darken-1"
-                flat
-                @click.native="cancle">취소</v-btn>
-              <v-btn
-                color="blue darken-1"
-                flat
-                @click.native="update">수정</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+          <v-form
+            ref="form" v-model="valid" lazy-validation>
+            <v-dialog
+              v-model="dialog"
+              max-width="700px">
+              <v-card>
+                <v-card-title>
+                  <span class="headline">나의 교육 간편 수정</span>
+                  <v-spacer/>
+                  <h6 class="red--text">* 교육 내용, 해시태그는 상세페이지에서 수정가능합니다.</h6>
+                </v-card-title>
+                <v-card-text>
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex
+                        xs12
+                        sm6
+                        md8>
+                        <v-text-field
+                          v-model="editedItem.title"
+                          :rules="[v => !!v || '필수 입력사항입니다']"
+                          class="purple-input"
+                          label="교육 명"/>
+                      </v-flex>
+                      <v-flex
+                        xs12
+                        sm6
+                        md4>
+                        <v-select
+                          v-model="editedItem.category.id"
+                          :items="categoryList"
+                          :rules="[v => !!v || '필수 입력사항입니다']"
+                          label="카테고리(Category)"
+                          class="purple-input"
+                          prepend-icon="mdi-animation"
+                          item-text="name"
+                          item-value="id"
+                          required
+                          chips
+                          color="purple"
+                        />
+                      </v-flex>
+                      <v-flex
+                        xs12
+                        sm6
+                        md4>
+                        <v-text-field
+                          v-model="editedItem.startDate"
+                          :rules="dateRules"
+                          class="purple-input"
+                          hint="YYYY-MM-DD"
+                          label="시작 날짜"/>
+                      </v-flex>
+                      <v-flex
+                        xs12
+                        sm6
+                        md4>
+                        <v-text-field
+                          v-model="editedItem.endDate"
+                          :rules="dateRules"
+                          class="purple-input"
+                          hint="YYYY-MM-DD"
+                          label="종료 날짜"/>
+                      </v-flex>
+                      <v-flex
+                        xs12
+                        sm6
+                        md4>
+                        <v-text-field
+                          v-model="editedItem.totalHours"
+                          :rules="totalHoursRules"
+                          class="purple-input"
+                          type="number"
+                          hint="숫자입력(시간)"
+                          label="교육시간"/>
+                      </v-flex>
+                      <v-flex
+                        xs12
+                        sm6
+                        md6>
+                        <v-select
+                          v-model="editedItem.type"
+                          :items="edutypeList"
+                          :rules="[v => !!v || '필수 입력사항입니다']"
+                          label="교육유형"
+                          class="purple-input"
+                          prepend-icon="mdi-animation"
+                          required
+                          chips
+                          color="purple"
+                        />
+                      </v-flex>
+                      <v-flex
+                        xs12
+                        sm6
+                        md6>
+                        <v-text-field
+                          v-model="editedItem.place"
+                          label="교육 장소"/>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer/>
+                  <v-btn
+                    color="blue darken-1"
+                    flat
+                    @click.native="cancle">취소</v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    :disabled="!valid"
+                    flat
+                    @click.native="update">수정</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-form>
         <material-card
           color="blue"
           title="My Educations"
@@ -381,6 +391,15 @@ import { getStatisticsEducation } from '../api/statistics/statistics.js'
 export default {
   data () {
     return {
+      valid: true,
+      totalHoursRules: [
+        v => !!v || '필수 입력사항입니다.',
+        v => (v && v > 0) || '0보다 큰값을 입력해주세요.'
+      ],
+      dateRules: [
+        v => !!v || '필수 입력사항입니다.',
+        v => /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/.test(v) || 'yyyy-mm-dd 형식을 맞춰주세요!' 
+      ],
       pagination: {},
       dialog: false,
       headers: [
@@ -580,40 +599,44 @@ export default {
       }, 300)
     },
     update () {
-      if (this.editedIndex > -1) {
+      if (this.$refs.form.validate()||this.editedIndex > -1) {
         var vm = this
+        if (vm.editedItem.startDate > vm.editedItem.endDate) {  
+          alert('시작날짜가 종료날짜보다 클 수 없습니다.')
+        } else {
+          getCategoryItem(vm.editedItem.category.id)
+             .then(response => {
+               Object.assign(this.items[this.editedIndex], this.editedItem)
+               this.items[this.editedIndex].category.name = response.data.response.name
+             })
+             .catch(error => console.log(error))
 
-        getCategoryItem(vm.editedItem.category.id)
-          .then(response => {
-            Object.assign(this.items[this.editedIndex], this.editedItem)
-            this.items[this.editedIndex].category.name = response.data.response.name
-          })
-          .catch(error => console.log(error))
-
-        getMyEducationItem(this.editedItem.id)
-          .then(function (response) {
-            for (var i = 0; i < response.data.response.eduTags.length; i++) {
-              vm.hashTagString += response.data.response.eduTags[i].tagName + ' '
-            }
-            var editedEducation = {
-              title: vm.editedItem.title,
-              content: response.data.response.content,
-              startDate: vm.editedItem.startDate,
-              endDate: vm.editedItem.endDate,
-              totalHours: vm.editedItem.totalHours,
-              type: vm.editedItem.type,
-              place: vm.editedItem.place,
-              hashTag: vm.hashTagString,
-              userId: 1783,
-              categoryId: vm.editedItem.category.id
-            }
-            putMyEducationItem(response.data.response.id, editedEducation)
-              .then(alert('수정되었습니다!'))
-              .catch(error => console.log(error))
-            vm.cancle()
-          })
-          .catch(error => console.log(error))
+           getMyEducationItem(this.editedItem.id)
+             .then(function (response) {
+               for (var i = 0; i < response.data.response.eduTags.length; i++) {
+                 vm.hashTagString += response.data.response.eduTags[i].tagName + ' '
+               }
+               var editedEducation = {
+                 title: vm.editedItem.title,
+                 content: response.data.response.content,
+                 startDate: vm.editedItem.startDate,
+                 endDate: vm.editedItem.endDate,
+                 totalHours: vm.editedItem.totalHours,
+                 type: vm.editedItem.type,
+                 place: vm.editedItem.place,
+                 hashTag: vm.hashTagString,
+                 userId: 1783,
+                 categoryId: vm.editedItem.category.id
+               }
+               putMyEducationItem(response.data.response.id, editedEducation)
+                 .then(alert('수정되었습니다!'))
+                 .catch(error => console.log(error))
+               vm.cancle()
+             })
+             .catch(error => console.log(error))
+         }      
       }
+      
     }
   }
 }
